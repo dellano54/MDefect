@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="result-section">
+    <div class="alert alert-success d-flex align-items-center">
+        <i class="fas fa-check-circle fa-2x me-3"></i>
+        <div>
+            <h4 class="mb-0">Defect Detected: {{ predicted_class }}</h4>
+            <p class="mb-0">Confidence: {{ (confidence * 100)|round(1) }}%</p>
+        </div>
+        <div class="ms-auto">
+            <span class="confidence-badge">{{ (confidence * 100)|round(1) }}% Confidence</span>
+        </div>
+    </div>
+
+    <h5 class="section-title">Defect Visualization</h5>
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="image-container">
+                <span class="prediction-badge">Original</span>
+                <img src="data:image/jpeg;base64,{{ original }}" class="result-img" alt="Original Image">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="image-container">
+                <span class="prediction-badge">Grad-CAM</span>
+                <img src="data:image/jpeg;base64,{{ heatmap }}" class="result-img" alt="Grad-CAM Heatmap">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="image-container">
+                <span class="prediction-badge">Bounding Boxes</span>
+                <img src="data:image/jpeg;base64,{{ bbox }}" class="result-img" alt="Bounding Boxes">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="image-container">
+                <span class="prediction-badge">Sobel Edges</span>
+                <img src="data:image/jpeg;base64,{{ sobel }}" class="result-img" alt="Sobel Edges">
+            </div>
+        </div>
+    </div>
+
+    <h5 class="section-title">Defect Probability Distribution</h5>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="chart-container">
+                <img src="data:image/png;base64,{{ confidence_chart }}" class="img-fluid" alt="Confidence Chart">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Defect Class</th>
+                            <th>Probability</th>
+                            <th>Confidence</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in range(all_classes|length) %}
+                        <tr>
+                            <td>{{ all_classes[i] }}</td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar" 
+                                         role="progressbar" 
+                                         style="width: {{ probabilities[i] * 100 }}%"
+                                         aria-valuenow="{{ (probabilities[i] * 100)|round(2) }}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ (probabilities[i] * 100)|round(2) }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 text-center">
+        <button class="btn btn-primary me-2" id="download-pdf">
+            <i class="fas fa-download me-2"></i>Download Report
+        </button>
+        <button class="btn btn-outline-primary" onclick="location.href='/'">
+            <i class="fas fa-sync-alt me-2"></i>Analyze Another Image
+        </button>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#download-pdf').click(function () {
+            $.ajax({
+                url: '/download_report',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    image_path: "{{ image_path }}"
+                }),
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function (response) {
+                    const blob = new Blob([response], { type: 'application/pdf' });
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = 'defect_report.pdf';
+                    link.click();
+                },
+                error: function (jqXHR) {
+                    alert('Error generating report: ' + jqXHR.responseText);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

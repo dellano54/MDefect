@@ -1,0 +1,417 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <!-- Stats Panel -->
+    <div class="col-lg-3">
+        <div class="stat-badge">
+            <div class="stat-number">{{ num_classes }}</div>
+            <div class="stat-label">Defect Classes</div>
+        </div>
+        <div class="stat-badge" style="background: linear-gradient(120deg, #34a853, #2d8c4a);">
+            <div class="stat-number">16</div>
+            <div class="stat-label">Detection Features</div>
+        </div>
+        <div class="stat-badge" style="background: linear-gradient(120deg, #fbbc05, #e9ab04);">
+            <div class="stat-number">99.3%</div>
+            <div class="stat-label">Model Accuracy</div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-cogs me-2"></i>System Features
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <i class="fas fa-robot text-primary me-2"></i>
+                        AI-Powered Defect Detection
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-search-location text-primary me-2"></i>
+                        Precise Defect Localization
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-fire text-primary me-2"></i>
+                        Grad-CAM Heatmaps
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-vector-square text-primary me-2"></i>
+                        Bounding Box Detection
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-bolt text-primary me-2"></i>
+                        Edge Detection Analysis
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-chart-bar text-primary me-2"></i>
+                        Confidence Visualization
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="col-lg-9">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-cloud-upload-alt me-2"></i>Upload Inspection Image
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="upload-area" id="drop-area">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <h5>Drag & Drop Image Here</h5>
+                            <p class="text-muted mb-3">or click to browse files</p>
+                            <input type="file" class="visually-hidden" id="file-input" accept="image/*">
+                            <button class="btn btn-primary mt-2" id="browse-btn">
+                                <i class="fas fa-folder-open me-2"></i>Browse Files
+                            </button>
+                        </div>
+                        
+                        <!-- File Preview Section -->
+                        <div id="file-preview" class="mt-3" style="display: none;">
+                            <div class="image-container">
+                                <img id="preview-image" src="" alt="Preview" style="max-width: 100%; max-height: 200px; object-fit: contain;">
+                                <div class="mt-2">
+                                    <button class="btn btn-success" id="upload-btn">
+                                        <i class="fas fa-upload me-2"></i>Upload & Analyze
+                                    </button>
+                                    <button class="btn btn-secondary ms-2" id="cancel-btn">
+                                        <i class="fas fa-times me-2"></i>Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="section-title">How It Works</h6>
+                        <ol class="list-group list-group-numbered">
+                            <li class="list-group-item border-0">
+                                Upload or select a sample image
+                            </li>
+                            <li class="list-group-item border-0">
+                                AI model analyzes for defects
+                            </li>
+                            <li class="list-group-item border-0">
+                                View defect location and type
+                            </li>
+                            <li class="list-group-item border-0">
+                                Analyze confidence metrics
+                            </li>
+                            <li class="list-group-item border-0">
+                                Download inspection report
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h6 class="section-title">Sample Images</h6>
+                    <p class="text-muted mb-3">Select a sample image to test the system:</p>
+                    <div class="row g-3" id="sample-container">
+                        {% for img in sample_images %}
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="sample-card" data-sample="{{ img }}">
+                                <img src="{{ url_for('serve_sample', filename=img) }}" 
+                                     class="card-img-top" alt="{{ img }}" style="height: 120px; object-fit: cover;">
+                                <div class="p-2 text-center small">
+                                    {{ img.split('.')[0]|truncate(10) }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="result-container" class="mt-4"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        let selectedFile = null;
+        
+        // Handle sample image selection
+        $('.sample-card').click(function() {
+            $('.sample-card').removeClass('active');
+            $(this).addClass('active');
+            const sampleName = $(this).data('sample');
+            
+            // Show loading indicator
+            $('#loading').removeClass('d-none');
+            
+            // Submit form
+            $.post('/analyze', { sample: sampleName }, function(data) {
+                displayResults(data);
+            }).fail(function(jqXHR) {
+                $('#loading').addClass('d-none');
+                $('#result-container').html(`
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Error: ${jqXHR.responseJSON?.error || 'Server error'}
+                    </div>
+                `);
+            });
+        });
+        
+        // Handle file input change
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFileSelection(file);
+            }
+        });
+        
+        // Handle browse button
+        document.getElementById('browse-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('file-input').click();
+        });
+        
+        // Handle file selection
+        function handleFileSelection(file) {
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/bmp', 'image/tiff'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Please select a valid image file (JPG, PNG, BMP, TIFF)');
+                return;
+            }
+            
+            // Validate file size (10MB limit)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File size too large. Please select an image under 10MB.');
+                return;
+            }
+            
+            selectedFile = file;
+            
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#preview-image').attr('src', e.target.result);
+                $('#file-preview').show();
+                $('#drop-area').hide();
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Handle upload button click
+        $('#upload-btn').click(function() {
+            if (!selectedFile) {
+                alert('No file selected');
+                return;
+            }
+            
+            // Show loading indicator
+            $('#loading').removeClass('d-none');
+            
+            // Create form data
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            
+            // Submit file
+            $.ajax({
+                url: '/analyze',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    displayResults(data);
+                },
+                error: function(jqXHR) {
+                    $('#loading').addClass('d-none');
+                    $('#result-container').html(`
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Error: ${jqXHR.responseJSON?.error || 'Upload failed. Please try again.'}
+                        </div>
+                    `);
+                }
+            });
+        });
+        
+        // Handle cancel button
+        $('#cancel-btn').click(function() {
+            resetUpload();
+        });
+        
+        // Reset upload
+        function resetUpload() {
+            selectedFile = null;
+            $('#file-input').val('');
+            $('#file-preview').hide();
+            $('#drop-area').show();
+            $('.sample-card').removeClass('active');
+            $('#result-container').html(''); // Clear results
+        }
+        
+        // Drag and drop functionality
+        $('#drop-area').on('dragover', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).css('border-color', '#1a73e8');
+            $(this).css('background-color', '#e8f0fe');
+        });
+        
+        $('#drop-area').on('dragleave', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).css('border-color', '#dadce0');
+            $(this).css('background-color', '#f8f9fa');
+        });
+        
+        $('#drop-area').on('drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).css('border-color', '#dadce0');
+            $(this).css('background-color', '#f8f9fa');
+            
+            const files = e.originalEvent.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelection(files[0]);
+            }
+        });
+        
+        // Make drop area clickable
+        $('#drop-area').click(function(e) {
+            if (e.target.id !== 'browse-btn') {
+                document.getElementById('file-input').click();
+            }
+        });
+        
+        // Display results
+        function displayResults(data) {
+            $('#loading').addClass('d-none');
+            
+            // Render results
+            const resultHtml = `
+                <div class="result-section">
+                    <div class="alert alert-success d-flex align-items-center">
+                        <i class="fas fa-check-circle fa-2x me-3"></i>
+                        <div>
+                            <h4 class="mb-0">Defect Detected: ${data.predicted_class}</h4>
+                            <p class="mb-0">Confidence: ${(data.confidence * 100).toFixed(1)}%</p>
+                        </div>
+                        <div class="ms-auto">
+                            <span class="confidence-badge">${(data.confidence * 100).toFixed(1)}% Confidence</span>
+                        </div>
+                    </div>
+                    
+                    <h5 class="section-title">Defect Visualization</h5>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <div class="image-container">
+                                <span class="prediction-badge">Original</span>
+                                <img src="data:image/jpeg;base64,${data.original}" class="result-img" alt="Original Image">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="image-container">
+                                <span class="prediction-badge">Grad-CAM</span>
+                                <img src="data:image/jpeg;base64,${data.heatmap}" class="result-img" alt="Grad-CAM Heatmap">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="image-container">
+                                <span class="prediction-badge">Bounding Boxes</span>
+                                <img src="data:image/jpeg;base64,${data.bbox}" class="result-img" alt="Bounding Boxes">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="image-container">
+                                <span class="prediction-badge">Sobel Edges</span>
+                                <img src="data:image/jpeg;base64,${data.sobel}" class="result-img" alt="Sobel Edges">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h5 class="section-title">Defect Probability Distribution</h5>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="chart-container">
+                                <img src="data:image/png;base64,${data.confidence_chart}" class="img-fluid" alt="Confidence Chart">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Defect Class</th>
+                                            <th>Probability</th>
+                                            <th>Confidence</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${data.all_classes.map((className, i) => `
+                                            <tr>
+                                                <td>${className}</td>
+                                                <td>
+                                                    <div class="progress">
+                                                        <div class="progress-bar" 
+                                                            role="progressbar" 
+                                                            style="width: ${data.probabilities[i] * 100}%"
+                                                            aria-valuenow="${(data.probabilities[i] * 100).toFixed(2)}" 
+                                                            aria-valuemin="0" 
+                                                            aria-valuemax="100">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>${(data.probabilities[i] * 100).toFixed(2)}%</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <button class="btn btn-primary me-2" id="download-pdf">
+                            <i class="fas fa-download me-2"></i>Download Report
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="resetUpload()">
+                            <i class="fas fa-sync-alt me-2"></i>Analyze Another Image
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            $('#result-container').html(resultHtml);
+            
+            // Add report download functionality
+            $('#download-pdf').click(function() {
+                $.ajax({
+                    url: '/download_report',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        image_path: data.image_path
+                    }),
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(response) {
+                        const blob = new Blob([response], {type: 'application/pdf'});
+                        const link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = 'defect_report.pdf';
+                        link.click();
+                    },
+                    error: function(jqXHR) {
+                        alert('Error generating report: ' + jqXHR.responseText);
+                    }
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

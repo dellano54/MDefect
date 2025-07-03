@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturing Defect Detection System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #0d62d9;
+            --secondary: #34a853;
+            --accent: #fbbc05;
+            --dark: #202124;
+            --light: #f8f9fa;
+            --gray: #5f6368;
+            --card-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+        
+        .navbar {
+            background: linear-gradient(120deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            font-size: 1.4rem;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                         url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0 70px;
+            color: white;
+            margin-bottom: 50px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            background: white;
+            margin-bottom: 25px;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(120deg, var(--primary), var(--primary-dark));
+            color: white;
+            font-weight: 600;
+            padding: 16px 25px;
+            border-bottom: none;
+            font-size: 1.1rem;
+        }
+
+        #file-preview {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        background: #f9f9f9;
+    }
+
+    .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .upload-area {
+        position: relative;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .upload-area.dragover {
+        border-color: var(--primary) !important;
+        background-color: #e8f0fe !important;
+        transform: scale(1.02);
+    }
+
+    /* File validation styles */
+    .file-error {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 10px;
+    }
+
+    .file-success {
+        color: #28a745;
+        font-size: 0.9rem;
+        margin-top: 10px;
+    }
+        
+        .section-title {
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            border: none;
+            padding: 12px 28px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+        }
+        
+        .sample-card {
+            cursor: pointer;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .sample-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 6px 15px rgba(66, 133, 244, 0.25);
+        }
+        
+        .sample-card.active {
+            border-color: var(--primary);
+            box-shadow: 0 6px 15px rgba(66, 133, 244, 0.35);
+        }
+        
+        .upload-area {
+            border: 2px dashed #dadce0;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: #f0f7ff;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .result-img {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .image-container {
+            text-align: center;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .confidence-badge {
+            background: var(--primary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .progress {
+            height: 24px;
+            border-radius: 12px;
+            background: #e9ecef;
+            overflow: visible;
+            margin-bottom: 8px;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            position: relative;
+            overflow: visible;
+        }
+        
+        .progress-bar:after {
+            content: attr(aria-valuenow) '%';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .footer {
+            background: var(--dark);
+            color: #e8eaed;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+        
+        .spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(26, 115, 232, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .prediction-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--secondary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .tech-badge {
+            background: rgba(26, 115, 232, 0.1);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        
+        .result-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+        }
+        
+        .stat-badge {
+            background: linear-gradient(120deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-industry me-2"></i>Manufacturing Defect Detection
+            </a>
+            <div class="d-flex align-items-center">
+                <span class="tech-badge me-2">
+                    <i class="fas fa-microchip me-1"></i> PyTorch
+                </span>
+                <span class="tech-badge">
+                    <i class="fas fa-brain me-1"></i> EfficientNet
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-3">AI-Powered Defect Detection</h1>
+            <p class="lead mb-4">Advanced computer vision solution for identifying manufacturing defects in real-time</p>
+            <div class="d-flex justify-content-center flex-wrap">
+                <span class="tech-badge bg-white text-dark mx-2">
+                    <i class="fas fa-cubes me-1"></i> Magnetic Tile Dataset
+                </span>
+                <span class="tech-badge bg-white text-dark mx-2">
+                    <i class="fas fa-shapes me-1"></i> DAGM Defect Patterns
+                </span>
+                <span class="tech-badge bg-white text-dark mx-2">
+                    <i class="fas fa-layer-group me-1"></i> 16 Defect Classes
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-white mb-3">Defect Detection System</h5>
+                    <p class="mb-0">Advanced AI solution for quality control in manufacturing environments.</p>
+                    <p class="mb-0">Built with PyTorch, Flask, and Computer Vision technologies.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-white mb-3">Technology Stack</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-circle text-primary me-2 small"></i>
+                            PyTorch Deep Learning Framework
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-circle text-primary me-2 small"></i>
+                            EfficientNet-B0 Architecture
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-circle text-primary me-2 small"></i>
+                            Grad-CAM Visualization
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-circle text-primary me-2 small"></i>
+                            Sobel Edge Detection
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-white mb-3">Defect Classes</h5>
+                    <div class="d-flex flex-wrap">
+                        <span class="tech-badge me-2 mb-2">MT_Blowhole</span>
+                        <span class="tech-badge me-2 mb-2">MT_Crack</span>
+                        <span class="tech-badge me-2 mb-2">Fine-grain scratchy</span>
+                        <span class="tech-badge me-2 mb-2">Flat speckle spots</span>
+                        <span class="tech-badge me-2 mb-2">Medium‑grain blob</span>
+                        <span class="tech-badge me-2 mb-2">Shadow texture</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-0 mb-4" style="background-color: #5f6368;">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">© 2023 Manufacturing Defect Detection System</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="d-inline-flex">
+                        <a href="https://github.com/dellano54/" class="text-white me-3"><i class="fab fa-github fa-lg"></i></a>
+                        <a href="https://www.linkedin.com/in/dellano-samuel-fernandez-238a8b336/" class="text-white me-3"><i class="fab fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div class="loading-container d-none" id="loading">
+        <div class="spinner"></div>
+        <h4 class="mt-4">Analyzing for Defects</h4>
+        <p class="text-muted">Processing image with AI models...</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
