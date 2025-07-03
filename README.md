@@ -161,7 +161,7 @@ python app.py
 
 | Original Image        | Heatmap Overlay       | Bounding Box          | Sobel Edge            |
 | --------------------- | --------------------- | --------------------- | --------------------- |
-| ![](docs/sample1.png) | ![](docs/sample2.png) | ![](docs/sample3.png) | ![](docs/sample4.png) |
+| ![](docs/sample1.jpeg) | ![](docs/sample2.jpeg) | ![](docs/sample3.jpeg) | ![](docs/sample4.jpeg) |
 
 ---
 
