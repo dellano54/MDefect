@@ -22,11 +22,11 @@ A deep learning-based system for automatic detection, classification, and locali
 
 ## 🃀 Bonus Features Implemented
 
-✅ **Grad-CAM** for model interpretability\n
-✅ **Flask Web App** for deployment\n
-✅ **Multi-Class Defect Classification** (16 unified classes)\n
-✅ **Transfer Learning** using EfficientNet-B0\n
-✅ **Edge Detection with Sobel filters** for defect localization\n
+✅ **Grad-CAM** for model interpretability  
+✅ **Flask Web App** for deployment  
+✅ **Multi-Class Defect Classification** (16 unified classes)  
+✅ **Transfer Learning** using EfficientNet-B0  
+✅ **Edge Detection with Sobel filters** for defect localization  
 
 ---
 
