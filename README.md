@@ -7,7 +7,7 @@ A deep learning-based system for automatic detection, classification, and locali
 ## 📌 Project Highlights
 
 * **Multi-Dataset Training** on DAGM & Magnetic Tile datasets (optionally extendable to PCB).
-* **Unified Classification** across 11 defect types.
+* **Unified Classification** across 16 defect types.
 * **Grad-CAM Visualization** for defect interpretability.
 * **Edge Detection** using Sobel filters for localization.
 * **Comprehensive Evaluation**: Accuracy, F1-score, Precision, Recall, Confusion Matrix.
@@ -111,7 +111,7 @@ python app.py
 ## 🧐 Model Architecture
 
 * **Backbone**: `EfficientNet-B0` pretrained on ImageNet.
-* **Classifier Head**: Single `Linear` layer for 11 classes.
+* **Classifier Head**: Single `Linear` layer for 16 classes.
 * **Augmentation**: Rescale, Flip, ColorJitter, Gaussian Blur, Random Erasing.
 
 ---
@@ -202,7 +202,7 @@ python app.py
 
 * [DAGM 2007 Dataset](https://hci.iwr.uni-heidelberg.de/node/3616)
 * [Magnetic Tile Dataset](https://github.com/zhiyongfu/Magnetic-Tile-Defect)
-* [EfficientNet Paper](https://arxiv.org/abs/1905.11946)
+* [EfficientNet Paper](https://arxiv.org/abs/1905.16946)
 
 ---
 
