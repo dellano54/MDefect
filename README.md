@@ -8,6 +8,7 @@
   <img src="https://img.shields.io/badge/Grad--CAM-FF6F61?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/EfficientNet--B0-EE4C2C?style=for-the-badge" />
 </p>
+
 🏠 Defect Detection in Manufacturing
 
 A deep learning-based system for automatic detection, classification, and localization of manufacturing defects using EfficientNet, Grad-CAM, and Sobel Edge Detection. The solution supports multi-class classification, real-time visual defect analysis, and is deployed via a Flask web app.
