@@ -1,5 +1,13 @@
 # 🏠 Defect Detection in Manufacturing
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white"/>
+  <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Grad--CAM-FF6F61?style=for-the-badge"/>
+</p>
+
 A deep learning-based system for automatic detection, classification, and localization of manufacturing defects using **EfficientNet**, **Grad-CAM**, and **Sobel Edge Detection**. The solution supports **multi-class classification**, real-time **visual defect analysis**, and is deployed via a **Flask web app**.
 
 ---
