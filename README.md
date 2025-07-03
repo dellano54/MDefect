@@ -63,20 +63,21 @@ A deep learning-based system for automatic detection, classification, and locali
 4. 📁 Prepare Dataset
 
 Dataset structure:
-
-Dataset/
-├── DAGM/
-│   ├── Class1/
-│   ├── Class2/
-│   └── ...
-└── Magnetic-Tile-Defect/
-    ├── MT_Blowhole/
-    ├── MT_Crack/
-    └── ...
+ ```
+   Dataset/
+   ├── DAGM/
+   │   ├── Class1/
+   │   ├── Class2/
+   │   ...
+   └── Magnetic-Tile-Defect/
+       ├── MT_Blowhole/
+       ├── MT_Crack/
+       ...
+   ```
 
 Download and unzip:
 
-Download Dataset
+[Download Dataset](https://drive.google.com/file/d/1Vn5arhPy8vvMhR4xCp7VRPGDzXo96ZMj/view)
 
 ---
 
