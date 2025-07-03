@@ -209,6 +209,5 @@ python app.py
 ## 📣 Credits
 
 Developed as part of the **DevifyX ML Job Assignment**
-For details, see: [Assignment Brief](Defect_Detection_in_Manufacturing%20%282%29.pdf)
 
 ---
