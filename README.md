@@ -1,13 +1,4 @@
-# 🏠 Defect Detection in Manufacturing
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
-  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white"/>
-  <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Grad--CAM-FF6F61?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/EfficientNet--B0-EE4C2C?style=for-the-badge" />
-</p>
 # 🏠 Defect Detection in Manufacturing
 
 <p align="center">
@@ -242,17 +233,3 @@ python app.py
 ## 📣 Credits
 
 Developed as part of the **DevifyX ML Job Assignment**
-
-## 📌 References
-
-* [DAGM 2007 Dataset](https://hci.iwr.uni-heidelberg.de/node/3616)
-* [Magnetic Tile Dataset](https://github.com/zhiyongfu/Magnetic-Tile-Defect)
-* [EfficientNet Paper](https://arxiv.org/abs/1905.16946)
-
----
-
-## 📣 Credits
-
-Developed as part of the **DevifyX ML Job Assignment**
-
----
