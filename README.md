@@ -60,19 +60,23 @@ A deep learning-based system for automatic detection, classification, and locali
    pip install -r requirements.txt
    ```
 
-4. **Prepare Dataset**
+4. 📁 Prepare Dataset
 
-   ```
-   Dataset/
-   ├── DAGM/
-   │   ├── Class1/
-   │   ├── Class2/
-   │   ...
-   └── Magnetic-Tile-Defect/
-       ├── MT_Blowhole/
-       ├── MT_Crack/
-       ...
-   ```
+Dataset structure:
+
+Dataset/
+├── DAGM/
+│   ├── Class1/
+│   ├── Class2/
+│   └── ...
+└── Magnetic-Tile-Defect/
+    ├── MT_Blowhole/
+    ├── MT_Crack/
+    └── ...
+
+Download and unzip:
+
+Download Dataset
 
 ---
 
