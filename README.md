@@ -8,180 +8,216 @@
   <img src="https://img.shields.io/badge/Grad--CAM-FF6F61?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/EfficientNet--B0-EE4C2C?style=for-the-badge" />
 </p>
+🏠 Defect Detection in Manufacturing
 
-A deep learning-based system for automatic detection, classification, and localization of manufacturing defects using **EfficientNet**, **Grad-CAM**, and **Sobel Edge Detection**. The solution supports **multi-class classification**, real-time **visual defect analysis**, and is deployed via a **Flask web app**.
+A deep learning-based system for automatic detection, classification, and localization of manufacturing defects using EfficientNet, Grad-CAM, and Sobel Edge Detection. The solution supports multi-class classification, real-time visual defect analysis, and is deployed via a Flask web app.
 
----
+🔗 GitHub Repository
 
-## 📌 Project Highlights
+🔗 GitHub Repository
 
-* **Multi-Dataset Training** on DAGM & Magnetic Tile datasets (optionally extendable to PCB).
-* **Unified Classification** across 16 defect types.
-* **Grad-CAM Visualization** for defect interpretability.
-* **Edge Detection** using Sobel filters for localization.
-* **Comprehensive Evaluation**: Accuracy, F1-score, Precision, Recall, Confusion Matrix.
-* **Flask App** with real-time analysis and downloadable PDF reports.
-* **Training Visualizations** including:
+🃀 Bonus Features Implemented
 
-  * Accuracy/Loss Curves
-  * Class Distribution
-  * Per-Dataset Accuracy
-  * Confusion Matrix
-  * Validation Metrics Curve
+✅ Grad-CAM for model interpretability✅ Flask Web App for deployment✅ Multi-Class Defect Classification (16 unified classes)✅ Transfer Learning using EfficientNet-B0✅ Edge Detection with Sobel filters for defect localization
 
----
+📌 Project Highlights
 
-## 📊 Visualizations
+Multi-Dataset Training on DAGM & Magnetic Tile datasets (optionally extendable to PCB).
 
-| Accuracy Curve                               | Loss Curve                           |
-| -------------------------------------------- | ------------------------------------ |
-| ![Accuracy Curve](charts/accuracy_curve.png) | ![Loss Curve](charts/loss_curve.png) |
+Unified Classification across 16 defect types.
 
-| Class Distribution                                   | Confusion Matrix                                 |
-| ---------------------------------------------------- | ------------------------------------------------ |
-| ![Class Distribution](charts/class_distribution.png) | ![Confusion Matrix](charts/confusion_matrix.png) |
+Grad-CAM Visualization for defect interpretability.
 
-| Per-Dataset Accuracy                                     | Validation Metrics                            |
-| -------------------------------------------------------- | --------------------------------------------- |
-| ![Per Dataset Accuracy](charts/per_dataset_accuracy.png) | ![Validation Metrics](charts/val_metrics.png) |
+Edge Detection using Sobel filters for localization.
 
----
+Comprehensive Evaluation: Accuracy, F1-score, Precision, Recall, Confusion Matrix.
 
-## 🔧 Setup Instructions
+Flask App with real-time analysis and downloadable PDF reports.
 
-1. **Clone Repository**
+📊 Evaluation Highlights
 
-   ```bash
-   git clone https://github.com/your-username/defect-detection.git
-   cd defect-detection
-   ```
+Metric
 
-2. **Create Environment**
+Value
 
-   ```bash
-   conda create -n defect-env python=3.8
-   conda activate defect-env
-   ```
+Accuracy
 
-3. **Install Requirements**
+92.45%
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+Precision
 
-4. 📁 Prepare Dataset
+0.913
+
+Recall
+
+0.901
+
+F1-Score
+
+0.907
+
+✅ Per-Dataset Accuracy
+
+Dataset
+
+Accuracy
+
+DAGM
+
+93.1%
+
+MT
+
+91.7%
+
+🔢 Reproducibility
+
+All experiments are fully reproducible via the provided requirements.txt, training.py, and dataset structure instructions.
+
+📊 Visualizations
+
+Accuracy Curve
+
+Loss Curve
+
+
+
+
+
+Class Distribution
+
+Confusion Matrix
+
+
+
+
+
+Per-Dataset Accuracy
+
+Validation Metrics
+
+
+
+
+
+🔧 Setup Instructions
+
+Clone Repository
+
+git clone https://github.com/your-username/defect-detection.git
+cd defect-detection
+
+Create Environment
+
+conda create -n defect-env python=3.8
+conda activate defect-env
+
+Install Requirements
+
+pip install -r requirements.txt
+
+📁 Prepare Dataset
 
 Dataset structure:
- ```
-   Dataset/
-   ├── DAGM/
-   │   ├── Class1/
-   │   ├── Class2/
-   │   ...
-   └── Magnetic-Tile-Defect/
-       ├── MT_Blowhole/
-       ├── MT_Crack/
-       ...
-   ```
+
+  Dataset/
+  ├── DAGM/
+  │   ├── Class1/
+  │   ├── Class2/
+  │   ...
+  └── Magnetic-Tile-Defect/
+      ├── MT_Blowhole/
+      ├── MT_Crack/
+      ...
 
 Download and unzip:
 
-[Download Dataset](https://drive.google.com/file/d/1Vn5arhPy8vvMhR4xCp7VRPGDzXo96ZMj/view)
+Download Dataset
 
----
+🚀 Running the Model
 
-## 🚀 Running the Model
+1. Training
 
-### 1. Training
-
-```bash
 python training.py
-```
 
 Outputs:
 
-* `best_model_unified.pth`
-* `charts/` (for plots)
-* `results_unified.json`
-* `gradcam_visualization_unified.png`
+best_model_unified.pth
 
-### 2. Launch Flask App
+charts/ (for plots)
 
-```bash
+results_unified.json
+
+gradcam_visualization_unified.png
+
+2. Launch Flask App
+
 python app.py
-```
 
-* Go to `http://localhost:5000`
-* Upload an image or choose a sample
-* View Grad-CAM, bounding boxes, edge overlay, and download the defect report PDF.
+Go to http://localhost:5000
 
----
+Upload an image or choose a sample
 
-## 🧐 Model Architecture
+View Grad-CAM, bounding boxes, edge overlay, and download the defect report PDF.
 
-* **Backbone**: `EfficientNet-B0` pretrained on ImageNet.
-* **Classifier Head**: Single `Linear` layer for 16 classes.
-* **Augmentation**: Rescale, Flip, ColorJitter, Gaussian Blur, Random Erasing.
+🧐 Model Architecture
 
----
+Backbone: EfficientNet-B0 pretrained on ImageNet.
 
-## 📊 Evaluation Metrics
+Classifier Head: Single Linear layer for 16 classes.
 
-| Metric        | Value  |
-| ------------- | ------ |
-| **Accuracy**  | 92.45% |
-| **Precision** | 0.913  |
-| **Recall**    | 0.901  |
-| **F1-Score**  | 0.907  |
+Augmentation: Rescale, Flip, ColorJitter, Gaussian Blur, Random Erasing.
 
-### ✅ Per-Dataset Accuracy
+📊 Methodology Summary
 
-| Dataset | Accuracy |
-| ------- | -------- |
-| DAGM    | 93.1%    |
-| MT      | 91.7%    |
+Dataset Harmonization:
 
----
+Unified class mapping.
 
-## 📌 Methodology Summary
+MT dataset upsampling to balance internal class distribution.
 
-1. **Dataset Harmonization**:
+Training Strategy:
 
-   * Unified class mapping.
-   * MT dataset upsampling to balance internal class distribution.
+Balanced sampling across all classes.
 
-2. **Training Strategy**:
+Learning rate scheduling with ReduceLROnPlateau.
 
-   * Balanced sampling across all classes.
-   * Learning rate scheduling with `ReduceLROnPlateau`.
+Evaluation:
 
-3. **Evaluation**:
+Balanced and stratified validation.
 
-   * Balanced and stratified validation.
-   * Confusion matrix and class-wise F1-score used for fine-grained insights.
+Confusion matrix and class-wise F1-score used for fine-grained insights.
 
-4. **Interpretability**:
+Interpretability:
 
-   * Grad-CAM for heatmap visualization.
-   * Sobel edge detection over CAM-highlighted regions.
+Grad-CAM for heatmap visualization.
 
-5. **Deployment**:
+Sobel edge detection over CAM-highlighted regions.
 
-   * Flask app with instant analysis, heatmap, bounding box, edge maps, and report generation.
+Deployment:
 
----
+Flask app with instant analysis, heatmap, bounding box, edge maps, and report generation.
 
-## 🧪 Sample Analysis Output
+🧪 Sample Analysis Output
 
-| Original Image        | Heatmap Overlay       | Bounding Box          | Sobel Edge            |
-| --------------------- | --------------------- | --------------------- | --------------------- |
-| ![](docs/sample1.jpeg) | ![](docs/sample2.jpeg) | ![](docs/sample3.jpeg) | ![](docs/sample4.jpeg) |
+Original Image
 
----
+Heatmap Overlay
 
-## 📂 Directory Structure
+Bounding Box
 
-```
+Sobel Edge
+
+
+
+
+
+
+
+
+
+📂 Directory Structure
+
 .
 ├── training.py
 ├── app.py
@@ -194,18 +230,15 @@ python app.py
 ├── static/
 ├── sample/
 ├── requirements.txt
-└── README.md
-```
+└── README_FOR_SUBMISSION.md
 
----
+💡 Recommendations
 
-## 💡 Recommendations
+Consider including PCB dataset for broader generalization.
 
-* Consider including PCB dataset for broader generalization.
-* Further augment DAGM defects to improve recall.
-* Optuna-based hyperparameter tuning for optimal performance.
+Further augment DAGM defects to improve recall.
 
----
+Optuna-based hyperparameter tuning for optimal performance.
 
 ## 📌 References
 
