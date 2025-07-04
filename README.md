@@ -14,9 +14,9 @@ A deep learning-based system for automatic detection, classification, and locali
 
 ---
 
-## 🔗 GitHub Repository
+## 🔗 Working Demo
 
-🔗 **[GitHub Repository](https://github.com/your-username/defect-detection)**
+🔗 **[spaces link](https://huggingface.co/spaces/Dellano-Samuel/DevifyX-Assignment)**
 
 ---
 
